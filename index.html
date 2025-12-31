@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy New Year Priya</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- CSS Reset & Base Styles --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            width: 100%;
+            font-family: 'Lato', sans-serif;
+            overflow: hidden; /* Prevent scrolling for premium app feel */
+        }
+
+        /* --- Dynamic Background --- */
+        #background-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('img1.jpg'); /* Default Start Image */
+            background-size: cover;
+            background-position: center;
+            transition: background-image 1s ease-in-out;
+            z-index: -1;
+        }
+
+        /* Dark overlay to make text readable */
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4); 
+            z-index: 0;
+        }
+
+        /* --- Main Container --- */
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            position: relative;
+            z-index: 10;
+            padding: 20px;
+        }
+
+        /* --- Glassmorphism Card Design --- */
+        .card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            color: #fff;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            display: none; /* Hidden by default */
+            max-height: 90vh;
+            overflow-y: auto; /* Allow scroll inside card if text is long */
+        }
+
+        /* Custom Scrollbar for the card */
+        .card::-webkit-scrollbar {
+            width: 6px;
+        }
+        .card::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3); 
+            border-radius: 10px;
+        }
+
+        .card.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- Typography --- */
+        h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: #ffeaa7; /* Soft Gold */
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-weight: 300;
+        }
+
+        .signature {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2rem;
+            margin-top: 20px;
+            color: #ffeaa7;
+        }
+
+        /* --- Buttons --- */
+        .btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5253);
+            border: none;
+            padding: 12px 30px;
+            color: white;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 20px;
+            font-family: 'Playfair Display', serif;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 107, 107, 0.6);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid #fff;
+            margin-right: 10px;
+        }
+
+        /* --- Entrance Screen --- */
+        #entrance-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            transition: opacity 1s ease;
+        }
+        
+        .heart-beat {
+            font-size: 4rem;
+            animation: beat 1s infinite alternate;
+        }
+
+        @keyframes beat {
+            to { transform: scale(1.2); }
+        }
+
+        /* --- Music Control --- */
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 20;
+            background: rgba(255,255,255,0.2);
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" loop>
+        <source src="music143.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <div id="background-layer"></div>
+    <div id="overlay"></div>
+
+    <div id="entrance-screen">
+        <div class="heart-beat">💌</div>
+        <p style="margin-top: 20px; font-family: 'Playfair Display';">A Surprise for Priya</p>
+        <button class="btn" onclick="startExperience()">Tap to Open</button>
+    </div>
+
+    <div class="music-control" onclick="toggleMusic()">🎵</div>
+
+    <div class="container">
+        
+        <div id="page1" class="card">
+            <h1>Happy New Year, Priya! 🎉✨</h1>
+            <p>
+                As we step into 2025, I just want you to know how grateful I am to have you in my life. This past year has been so much brighter because of you, and I can't wait to see what adventures and beautiful moments we'll share in the year ahead.
+            </p>
+            <p>
+                Here's to more laughter, more love, and more memories together. May this new year bring you all the happiness, success, and dreams fulfilled that you deserve.
+            </p>
+            <p>
+                I love you, and I'm so excited to start this new chapter with you by my side.
+            </p>
+            <p style="font-weight: bold; font-size: 1.2rem;">
+                Happy New Year, my love! 💕 <br> Cheers to us! 🥂
+            </p>
+            <button class="btn" onclick="goToPage2()">Read My Letter ➜</button>
+        </div>
+
+        <div id="page2" class="card">
+            <h2>My Dearest Priya,</h2>
+            <p>
+                As we welcome 2025 and look ahead to 2026, I've been thinking about all the wonderful things we can achieve together. Here's to our shared dreams and the journey ahead:
+            </p>
+            
+            <div style="text-align: left; margin-top: 20px;">
+                <h3 style="color:#ffeaa7; margin-bottom:10px; font-family:'Playfair Display'">Our Goals for 2026:</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 10px;">✨ <strong>Travel:</strong> Together, let's make 2026 the year we finally take that dream vacation - exploring new places and experiencing the world side by side.</li>
+                    <li style="margin-bottom: 10px;">❤️ <strong>Bonding:</strong> Let's grow stronger by communicating openly, supporting ambitions, and celebrating the little moments.</li>
+                    <li style="margin-bottom: 10px;">🏠 <strong>Future:</strong> I want us to build towards our future together - saving for our dreams and creating a home filled with love.</li>
+                    <li style="margin-bottom: 10px;">🥗 <strong>Health:</strong> Let's prioritize our health, trying new activities, cooking healthier meals, and making time for joy.</li>
+                    <li style="margin-bottom: 10px;">💍 <strong>Promise:</strong> Most importantly, let's promise to keep choosing each other every single day.</li>
+                </ul>
+            </div>
+
+            <p style="margin-top: 15px;">
+                Whatever 2026 brings, I know we'll face it together. With you by my side, I'm ready for anything.
+            </p>
+            
+            <div class="signature">All my love,<br> Yogi</div>
+            
+            <button class="btn btn-secondary" onclick="goToPage1()">⬅ Back</button>
+        </div>
+
+    </div>
+
+    <script>
+        // Variables
+        const bgLayer = document.getElementById('background-layer');
+        const page1 = document.getElementById('page1');
+        const page2 = document.getElementById('page2');
+        const entranceScreen = document.getElementById('entrance-screen');
+        const audio = document.getElementById('bg-music');
+        let isMusicPlaying = false;
+
+        // Function to start the website (Unboxing)
+        function startExperience() {
+            entranceScreen.style.opacity = '0';
+            setTimeout(() => {
+                entranceScreen.style.display = 'none';
+                page1.classList.add('active'); // Show Page 1
+                
+                // Attempt to play music
+                audio.volume = 0.5; // Set volume to 50%
+                audio.play().then(() => {
+                    isMusicPlaying = true;
+                }).catch(error => {
+                    console.log("Auto-play prevented by browser. User must click toggle manually.");
+                });
+
+            }, 1000);
+        }
+
+        // Navigate to Page 2
+        function goToPage2() {
+            page1.classList.remove('active'); // Hide Page 1
+            setTimeout(() => {
+                page1.style.display = 'none'; // Ensure it's gone from flow
+                
+                // Change Background
+                bgLayer.style.backgroundImage = "url('img2.jpg')";
+                
+                page2.style.display = 'block'; // Prepare Page 2
+                setTimeout(() => {
+                    page2.classList.add('active'); // Show Page 2 with fade
+                }, 50);
+            }, 500); // Wait for fade out
+        }
+
+        // Navigate back to Page 1
+        function goToPage1() {
+            page2.classList.remove('active');
+            setTimeout(() => {
+                page2.style.display = 'none';
+                
+                // Change Background Back
+                bgLayer.style.backgroundImage = "url('img1.jpg')";
+                
+                page1.style.display = 'block';
+                setTimeout(() => {
+                    page1.classList.add('active');
+                }, 50);
+            }, 500);
+        }
+
+        // Music Toggle Logic
+        function toggleMusic() {
+            if (isMusicPlaying) {
+                audio.pause();
+                isMusicPlaying = false;
+            } else {
+                audio.play();
+                isMusicPlaying = true;
+            }
+        }
+    </script>
+</body>
+</html>
